@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NoteCard from '../../components/NoteCard.astro';
+import { NOTE_CATEGORIES } from '../../config/site';
+const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const tags = [...new Set(notes.flatMap(note => note.data.tags))].sort();
+---
+<BaseLayout title="Notes" description="Working thoughts on research, systems, learning, and becoming.">
+  <div class="container" data-notes-browser>
+    <header class="page-intro"><p class="eyebrow">Digital garden</p><h1>Notes</h1><p>Notes are working thoughts on research, systems, learning, and becoming.<br />Some are polished; many are still in progress.</p></header>
+    {notes.length > 0 ? <>
+      <section class="filters" aria-label="Filter notes">
+        <div class="search-row"><label for="note-search">Search notes</label><div><input id="note-search" data-search-input type="search" placeholder="Title, summary, tag, category…" autocomplete="off" /><button data-clear-filters type="button" hidden>Clear filters</button></div></div>
+        <div class="filter-group"><span>Category</span><div>{NOTE_CATEGORIES.map(category => <button type="button" data-category-filter={category} aria-pressed={category === 'All'}>{category}</button>)}</div></div>
+        {tags.length > 0 && <div class="filter-group"><span>Tags</span><div><button type="button" data-tag-filter="All" aria-pressed="true">All tags</button>{tags.map(tag => <button type="button" data-tag-filter={tag} aria-pressed="false">#{tag}</button>)}</div></div>}
+      </section>
+      <div class="result-line"><span data-result-count>{notes.length} notes</span><span>Newest first</span></div>
+      <section aria-live="polite">{notes.map(note => <NoteCard note={note} />)}<div class="filter-empty" data-filter-empty hidden><h2>No notes found</h2><p>Try a different keyword or clear the current filters.</p><button class="button secondary" data-clear-filters type="button">Clear filters</button></div></section>
+    </> : <div class="empty-state"><h2>The garden is quiet for now.</h2><p>Notes on research, systems, learning, and building will appear here as they take shape.</p></div>}
+  </div>
+  <script src="../../components/SearchNotes.ts"></script>
+</BaseLayout>
+<style>
+  .filters { margin-bottom: 2.5rem; padding: 1.25rem; border: 1px solid var(--border); border-radius: 8px; background: color-mix(in srgb, var(--surface) 55%, transparent); }
+  .search-row label, .filter-group > span { display: block; margin-bottom: .45rem; color: var(--muted); font-size: .75rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+  .search-row > div { display: flex; gap: .6rem; }
+  input { width: min(100%, 530px); padding: .65rem .8rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--text); }
+  .search-row button { border: 0; background: transparent; color: var(--accent); cursor: pointer; }
+  .filter-group { margin-top: 1rem; }
+  .filter-group > div { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .filter-group button { padding: .25rem .65rem; border: 1px solid var(--border); border-radius: 999px; background: transparent; color: var(--muted); cursor: pointer; font-size: .78rem; }
+  .filter-group button[aria-pressed='true'] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+  .result-line { display: flex; justify-content: space-between; padding-bottom: .7rem; color: var(--faint); font-size: .78rem; }
+  .filter-empty { padding: 4rem 0; text-align: center; }
+  .filter-empty h2 { margin-bottom: .3rem; }
+  .filter-empty p { color: var(--muted); }
+</style>

@@ -1,0 +1,10 @@
+---
+interface Props { tags: string[]; linked?: boolean; }
+const { tags, linked = false } = Astro.props;
+---
+<ul class="tags" aria-label="Tags">{tags.map(tag => <li>{linked ? <a href={`/notes?tag=${encodeURIComponent(tag)}`}>{tag}</a> : <span>{tag}</span>}</li>)}</ul>
+<style>
+  .tags { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0; padding: 0; list-style: none; }
+  .tags :is(a, span) { display: inline-block; padding: .12rem .5rem; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: .75rem; line-height: 1.5; text-decoration: none; }
+  .tags a:hover { border-color: var(--accent); color: var(--accent); }
+</style>

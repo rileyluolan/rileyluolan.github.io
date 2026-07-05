@@ -1,0 +1,5 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Page not found" description="The page you were looking for does not exist."><div class="reading-width missing"><p class="eyebrow">404</p><h1>This path has not grown yet.</h1><p>The page may have moved, or it may still be only an idea.</p><div><a class="button" href="/">Go home</a><a href="/notes/">Browse Notes</a></div></div></BaseLayout>
+<style>.missing { padding: clamp(6rem, 18vw, 12rem) 0; }.missing h1 { margin: .2rem 0 1rem; font-size: clamp(2.5rem, 7vw, 4.5rem); }.missing > p:not(.eyebrow) { color: var(--muted); }.missing div { display: flex; align-items: center; gap: 1.2rem; margin-top: 2rem; }</style>

@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Projects" description="Projects that have grown beyond an experiment and can be explained clearly.">
+  <div class="container"><header class="page-intro"><p class="eyebrow">Built carefully</p><h1>Projects</h1></header><section class="project-empty"><div class="symbol" aria-hidden="true">↳</div><div><h2>I am still building the things I want to share here.</h2><p>For now, this space is reserved for projects that have grown beyond an experiment and can be explained clearly: the problem, the process, what worked, what failed, and what I learned.</p><p>Until then, most of my work-in-progress thoughts live in Notes.</p><a class="button secondary" href="/notes/">Browse Notes</a></div></section></div>
+</BaseLayout>
+<style>
+  .project-empty { display: grid; grid-template-columns: 70px minmax(0, 700px); gap: 2rem; padding: 1rem 0 5rem; }
+  .symbol { color: var(--accent); font: 3rem var(--serif); }
+  h2 { margin-top: 0; font-size: clamp(1.7rem, 4vw, 2.4rem); }
+  p { color: var(--muted); }
+  @media (max-width: 560px) { .project-empty { grid-template-columns: 1fr; gap: .5rem; } }
+</style>

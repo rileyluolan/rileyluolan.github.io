@@ -1,0 +1,24 @@
+<button class="theme-toggle" type="button" aria-label="Toggle color theme" title="Toggle color theme">
+  <span class="sun" aria-hidden="true">☼</span><span class="moon" aria-hidden="true">◐</span>
+</button>
+
+<script is:inline>
+  const button = document.querySelector('.theme-toggle');
+  const root = document.documentElement;
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light' || saved === 'dark') root.dataset.theme = saved;
+  button?.addEventListener('click', () => {
+    const current = root.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    localStorage.setItem('theme', next);
+  });
+</script>
+
+<style>
+  .theme-toggle { display: grid; place-items: center; width: 2.3rem; height: 2.3rem; padding: 0; border: 1px solid var(--border); border-radius: 50%; background: transparent; color: var(--text); cursor: pointer; }
+  .moon { display: none; }
+  :global([data-theme='dark']) .sun { display: none; }
+  :global([data-theme='dark']) .moon { display: inline; }
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme='light'])) .sun { display: none; } :global(:root:not([data-theme='light'])) .moon { display: inline; } }
+</style>

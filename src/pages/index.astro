@@ -1,0 +1,46 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NoteCard from '../components/NoteCard.astro';
+const now = await getEntry('pages', 'now');
+const NowContent = now ? (await render(now)).Content : null;
+const notes = (await getCollection('notes', ({ data }) => !data.draft && data.featured)).sort((a, b) => (a.data.featuredOrder ?? 999) - (b.data.featuredOrder ?? 999));
+---
+<BaseLayout>
+  <section class="hero container">
+    <p class="eyebrow">Hello, I’m</p>
+    <h1>Riley Luo</h1>
+    <p class="subtitle">Spatial AI · Embodied Intelligence · Building Things</p>
+    <p class="intro">I build, test, and write about spatial intelligence,<br class="wide" /> multimodal systems, research workflows, and learning in public.</p>
+    <p class="chinese">记录空间智能、具身系统、工程实践，以及成为研究者与构建者的过程。</p>
+    <div class="actions"><a class="button" href="/notes/">Explore Notes</a><a class="button secondary" href="/about/">About Me</a></div>
+  </section>
+
+  <section class="quiet-section"><div class="container split">
+    <div><p class="eyebrow">Current focus</p><h2>Now</h2><p class="updated">Last updated: {now?.data.lastUpdated}</p></div>
+    <div class="now-content prose">{NowContent && <NowContent />}</div>
+  </div></section>
+
+  <section class="quiet-section"><div class="container">
+    <div class="section-head"><div><p class="eyebrow">From the garden</p><h2>Selected Notes</h2></div>{notes.length > 0 && <a href="/notes/">Browse all notes →</a>}</div>
+    {notes.length > 0 ? <div>{notes.map(note => <NoteCard note={note} />)}</div> : <div class="empty-state"><p>A few notes are still taking shape.\nThis space will gradually collect selected writing on research, systems, learning, and building.</p><a class="button secondary" href="/notes/">Browse Notes</a></div>}
+  </div></section>
+
+  <section class="quiet-section"><div class="container projects-line"><div><p class="eyebrow">Work in progress</p><h2>Projects</h2></div><div><p>This section is still growing. I am currently focusing on learning, experimenting, and turning early ideas into work I can share.</p><a class="button secondary" href="/projects/">Visit Projects</a></div></div></section>
+</BaseLayout>
+<style>
+  .hero { padding: clamp(5rem, 14vw, 10rem) 0 clamp(5rem, 11vw, 8rem); }
+  .hero h1 { max-width: 800px; margin: .15rem 0 .8rem; }
+  .subtitle { margin: 0 0 2.2rem; color: var(--accent); font-size: clamp(1rem, 2.5vw, 1.25rem); letter-spacing: .02em; }
+  .intro { max-width: 700px; margin: 0; font-family: var(--serif); font-size: clamp(1.35rem, 3vw, 1.8rem); line-height: 1.5; }
+  .chinese { max-width: 680px; margin: 1rem 0 0; color: var(--muted); }
+  .actions { display: flex; gap: .7rem; margin-top: 2rem; }
+  .split, .projects-line { display: grid; grid-template-columns: minmax(200px, .8fr) minmax(0, 1.5fr); gap: clamp(2rem, 8vw, 7rem); }
+  .split h2, .projects-line h2 { margin: 0; }
+  .updated { color: var(--faint); font-size: .8rem; }
+  .now-content { color: var(--muted); }
+  .now-content :global(p:first-child) { margin-top: 0; }
+  .now-content :global(p:last-child) { display: none; }
+  .projects-line p { max-width: 620px; margin-top: 0; color: var(--muted); }
+  @media (max-width: 700px) { .split, .projects-line { grid-template-columns: 1fr; gap: 1rem; } .wide { display: none; } }
+</style>

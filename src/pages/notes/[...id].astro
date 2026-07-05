@@ -1,0 +1,10 @@
+---
+import { getCollection, render } from 'astro:content';
+import NoteLayout from '../../layouts/NoteLayout.astro';
+export async function getStaticPaths() {
+  const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return Promise.all(notes.map(async (note, index) => ({ params: { id: note.id }, props: { note, rendered: await render(note), previous: notes[index + 1], next: notes[index - 1] } })));
+}
+const { note, rendered, previous, next } = Astro.props;
+---
+<NoteLayout note={note} rendered={rendered} previous={previous} next={next} />

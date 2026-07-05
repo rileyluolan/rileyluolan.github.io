@@ -1,0 +1,11 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+const page = await getEntry('pages', 'now');
+if (!page) throw new Error('Missing src/content/pages/now.md');
+const { Content } = await render(page);
+---
+<BaseLayout title={page.data.title} description={page.data.description}>
+  <div class="reading-width"><header class="page-intro"><p class="eyebrow">A current snapshot</p><h1>Now</h1><p class="updated">Last updated: {page.data.lastUpdated}</p></header><article class="prose"><Content /></article><p class="snapshot">This is a snapshot, not a permanent identity.</p></div>
+</BaseLayout>
+<style>.updated { font-size: .85rem !important; color: var(--faint) !important; }.snapshot { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--muted); font-family: var(--serif); font-style: italic; }</style>

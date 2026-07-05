@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config/site';
+---
+<BaseLayout title="About" description="About Riley Luo and the questions behind this digital garden.">
+  <div class="container"><header class="page-intro"><p class="eyebrow">A little context</p><h1>About</h1></header><div class="about-grid"><article class="prose"><p class="lead">I am Riley Luo, an undergraduate student exploring spatial AI, embodied intelligence, multimodal systems, and research engineering.</p><p>I am interested in the messy middle between an idea and a working system: running baselines, tracing failures, refining prompts, building evaluation workflows, and turning prototypes into something usable.</p><p>This site is where I keep public notes on projects, papers, experiments, and the ongoing process of learning how to think and build.</p><p lang="zh-CN">我目前关注空间智能、无人机与具身系统，也在学习如何把模糊的研究或个人需求，逐步落成可以运行、验证和持续改进的系统。</p></article><aside><h2>Interests</h2><ul><li>Spatial AI</li><li>Embodied Intelligence</li><li>Multimodal Systems</li><li>UAV and Urban Intelligence</li><li>Research Engineering</li><li>AI-assisted Building</li></ul><h2>Elsewhere</h2><p><a href={SITE.github}>GitHub: @rileyluolan ↗</a><br /><span>Email: <em>placeholder — easy to replace</em></span></p></aside></div></div>
+</BaseLayout>
+<style>
+  .about-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(240px, .7fr); gap: clamp(3rem, 9vw, 8rem); }
+  .lead { font-family: var(--serif); font-size: 1.35rem; color: var(--text); }
+  aside { padding-left: 1.5rem; border-left: 1px solid var(--border); color: var(--muted); }
+  aside h2 { margin: 0 0 .7rem; color: var(--text); font: 1rem var(--sans); }
+  aside h2:not(:first-child) { margin-top: 2.4rem; }
+  aside ul { padding-left: 1.2rem; }
+  aside em { font-size: .85rem; }
+  @media (max-width: 720px) { .about-grid { grid-template-columns: 1fr; } }
+</style>

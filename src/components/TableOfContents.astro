@@ -1,0 +1,16 @@
+---
+import type { MarkdownHeading } from 'astro';
+interface Props { headings: MarkdownHeading[]; }
+const { headings } = Astro.props;
+const visible = headings.filter(h => h.depth === 2 || h.depth === 3);
+---
+{visible.length > 0 && <nav class="toc" aria-label="Table of contents"><p>On this page</p><ol>{visible.map(h => <li class={`depth-${h.depth}`}><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></nav>}
+<style>
+  .toc { margin: 2rem 0 3rem; padding: 1rem 1.1rem; border-left: 2px solid var(--border); }
+  .toc p { margin: 0 0 .5rem; color: var(--text); font-size: .78rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+  .toc ol { margin: 0; padding: 0; list-style: none; }
+  .toc li { margin: .28rem 0; }
+  .toc .depth-3 { padding-left: 1rem; }
+  .toc a { color: var(--muted); font-size: .86rem; text-decoration: none; }
+  .toc a:hover { color: var(--accent); }
+</style>
