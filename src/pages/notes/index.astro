@@ -8,7 +8,7 @@ const tags = [...new Set(notes.flatMap(note => note.data.tags))].sort();
 ---
 <BaseLayout title="Notes" description="Working thoughts on research, systems, learning, and becoming.">
   <div class="container" data-notes-browser>
-    <header class="page-intro"><p class="eyebrow">Digital garden</p><h1>Notes</h1><p>Notes are working thoughts on research, systems, learning, and becoming.<br />Some are polished; many are still in progress.</p></header>
+    <header class="page-intro"><p class="eyebrow">Writing & records</p><h1>Notes</h1><p>Notes are working thoughts on research, systems, learning, and becoming.<br />Some are polished; many are still in progress.</p></header>
     {notes.length > 0 ? <>
       <section class="filters" aria-label="Filter notes">
         <div class="search-row"><label for="note-search">Search notes</label><div><input id="note-search" data-search-input type="search" placeholder="Title, summary, tag, category…" autocomplete="off" /><button data-clear-filters type="button" hidden>Clear filters</button></div></div>

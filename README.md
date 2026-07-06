@@ -1,4 +1,4 @@
-# Riley Luo — Digital Garden
+# 罗澜 · Lan Luo — Personal Site
 
 A quiet personal homepage and public notebook for spatial AI, embodied intelligence, multimodal systems, research engineering, and learning in public. Built with Astro, TypeScript, Markdown/MDX, and Content Collections.
 

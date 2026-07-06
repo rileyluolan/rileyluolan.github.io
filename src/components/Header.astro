@@ -6,7 +6,7 @@ const links = [['Home', '/'], ['Notes', '/notes'], ['Projects', '/projects'], ['
 ---
 <header class="site-header">
   <div class="container bar">
-    <a class="mark" href="/" aria-label="Riley Luo home">RL<span>·</span></a>
+    <a class="mark" href="/" aria-label="罗澜主页">L</a>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span><span class="sr-only">Menu</span></button>
     <nav id="site-nav" aria-label="Primary navigation">
       {links.map(([label, href]) => <a href={href} aria-current={pathname === href || (href !== '/' && pathname.startsWith(href)) ? 'page' : undefined}>{label}</a>)}
@@ -24,7 +24,6 @@ const links = [['Home', '/'], ['Notes', '/notes'], ['Projects', '/projects'], ['
   .site-header { position: sticky; z-index: 50; top: 0; border-bottom: 1px solid color-mix(in srgb, var(--border) 75%, transparent); background: var(--header); backdrop-filter: blur(8px); }
   .bar { display: flex; min-height: 4.25rem; align-items: center; justify-content: space-between; }
   .mark { color: var(--text); font: 700 1.08rem/1 var(--serif); letter-spacing: .05em; text-decoration: none; }
-  .mark span { color: var(--accent); }
   nav { display: flex; align-items: center; gap: 1.25rem; }
   nav a { color: var(--muted); font-size: .9rem; text-decoration: none; }
   nav a:hover, nav a[aria-current='page'] { color: var(--text); }

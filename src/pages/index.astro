@@ -9,7 +9,7 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft && data.fe
 <BaseLayout>
   <section class="hero container">
     <p class="eyebrow">Hello, I’m</p>
-    <h1>Riley Luo</h1>
+    <h1>罗澜 <span>Lan Luo</span></h1>
     <p class="subtitle">Spatial AI · Embodied Intelligence · Building Things</p>
     <p class="intro">I build, test, and write about spatial intelligence,<br class="wide" /> multimodal systems, research workflows, and learning in public.</p>
     <p class="chinese">记录空间智能、具身系统、工程实践，以及成为研究者与构建者的过程。</p>
@@ -31,6 +31,7 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft && data.fe
 <style>
   .hero { padding: clamp(5rem, 14vw, 10rem) 0 clamp(5rem, 11vw, 8rem); }
   .hero h1 { max-width: 800px; margin: .15rem 0 .8rem; }
+  .hero h1 span { margin-left: .35em; color: var(--muted); font-family: var(--sans); font-size: .3em; font-weight: 500; letter-spacing: .02em; white-space: nowrap; }
   .subtitle { margin: 0 0 2.2rem; color: var(--accent); font-size: clamp(1rem, 2.5vw, 1.25rem); letter-spacing: .02em; }
   .intro { max-width: 700px; margin: 0; font-family: var(--serif); font-size: clamp(1.35rem, 3vw, 1.8rem); line-height: 1.5; }
   .chinese { max-width: 680px; margin: 1rem 0 0; color: var(--muted); }

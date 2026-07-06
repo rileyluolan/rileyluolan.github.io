@@ -1,6 +1,6 @@
 export const SITE = {
-  name: 'Riley Luo',
-  title: 'Riley Luo — Spatial AI & Embodied Intelligence',
+  name: '罗澜',
+  title: '罗澜 · Lan Luo — Spatial AI & Embodied Intelligence',
   description: 'Notes on spatial intelligence, embodied systems, research workflows, and learning in public.',
   url: 'https://rileyluolan.github.io',
   github: 'https://github.com/rileyluolan'

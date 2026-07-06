@@ -6,7 +6,7 @@ import { SITE } from '../config/site';
 interface Props { title?: string; description?: string; image?: string; type?: 'website' | 'article'; }
 const { title = SITE.title, description = SITE.description, image = '/favicon.svg', type = 'website' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, SITE.url);
-const fullTitle = title === SITE.title ? title : `${title} — Riley Luo`;
+const fullTitle = title === SITE.title ? title : `${title} — 罗澜`;
 ---
 <!doctype html>
 <html lang="en">
@@ -18,7 +18,7 @@ const fullTitle = title === SITE.title ? title : `${title} — Riley Luo`;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate" type="application/rss+xml" title="Riley Luo Notes" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="罗澜的 Notes" href="/rss.xml" />
     <meta property="og:type" content={type} /><meta property="og:title" content={fullTitle} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={new URL(image, SITE.url)} />
     <meta name="twitter:card" content="summary" />
     <script is:inline>try{const t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>

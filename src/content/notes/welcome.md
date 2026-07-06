@@ -1,10 +1,10 @@
 ---
-title: "Welcome to my digital garden"
+title: "Welcome to my notes"
 description: "A brief note about what this new space is for."
 date: 2026-07-06
 category: "Personal Systems"
 tags:
-  - digital garden
+  - site notes
   - learning
 featured: false
 status: "note"
