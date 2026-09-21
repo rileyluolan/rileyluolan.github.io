@@ -80,17 +80,9 @@ const t = useTranslations(locale);
         showImages: false,
         showSubResults: true,
         translations: {
-          placeholder: "搜索文章…",
-          search_label: "搜索本站文章",
-          clear_search: "清除",
-          load_more: "加载更多",
-          searching: "正在搜索 [SEARCH_TERM]…",
-          zero_results: "没有找到与 [SEARCH_TERM] 相关的文章",
-          one_result: "找到 [COUNT] 篇与 [SEARCH_TERM] 相关的文章",
-          many_results: "找到 [COUNT] 篇与 [SEARCH_TERM] 相关的文章",
-          total_zero_results: "没有结果",
-          total_one_result: "[COUNT] 篇文章",
-          total_many_results: "[COUNT] 篇文章",
+          placeholder: "Search posts…",
+          search_label: "Search blog posts",
+          clear_search: "Clear",
         },
         processTerm: function (term: string) {
           params.set("q", term); // Update the `q` parameter in the URL

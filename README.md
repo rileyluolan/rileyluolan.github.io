@@ -40,10 +40,12 @@ featured: false
 | 首页简短介绍                     | `src/pages/index.astro`      |
 | About 完整介绍                   | `src/content/pages/about.md` |
 | 网站名称、描述、GitHub、分页数量 | `astro-paper.config.ts`      |
-| 中文界面文案                     | `src/i18n/lang/zh-CN.ts`     |
+| 英文界面文案                     | `src/i18n/lang/en.ts`        |
 | 主题颜色                         | `src/styles/theme.css`       |
 
-目前仅展示首页、Blog、About。标签从 Blog 页和文章页进入。以后有正式发表时再增加 Publications。
+目前仅展示 Home、Blog、About，界面和个人介绍以英文为主，文章可以使用中文或英文。首页采用英文介绍、右侧 GitHub 头像、Research Interests 和按日期排列的 Latest Posts。标签从 Blog 页和文章页进入。以后有正式发表时再增加 Publications。
+
+头像使用公开 GitHub 头像的本地副本，位于 `public/profile-avatar.jpg`，可以直接替换为自己的照片。
 
 ## 本地预览
 
@@ -75,4 +77,6 @@ pnpm preview
 
 为降低维护量，使用系统字体和静态分享图，不依赖远程字体服务、服务器、数据库、评论后端或追踪服务。AstroPaper 后续更新不会自动覆盖本网站；必要时可以参考上游发行说明选择性同步。
 
-相对上游的主要改动：个人内容、中文界面、精简导航与页脚、旧链接跳转、GitHub Pages 部署、本地字体策略及长表格适配。主题 MIT 许可证保留在 `LICENSE`。
+相对上游的主要改动：个人内容、英文界面、学术主页排版、精简导航与页脚、旧链接跳转、GitHub Pages 部署、本地字体策略及长表格适配。主题 MIT 许可证保留在 `LICENSE`。
+
+搜索使用统一的中英文索引（`pagefind.yml`），保留中文分词能力；搜索界面为英文。

@@ -1,0 +1,2 @@
+# One index for English and Chinese posts, with Chinese word segmentation.
+force_language: zh

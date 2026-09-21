@@ -1,27 +1,26 @@
 ---
 import { getCollection } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
-import IconRss from "@/assets/icons/IconRss.svg";
-import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Card from "@/components/Card.astro";
-import LinkButton from "@/components/LinkButton.astro";
+import Socials from "@/components/Socials.astro";
 import { getSortedPosts } from "@/utils/getSortedPosts";
-import { useTranslations } from "@/i18n";
+import { getPostUrl } from "@/utils/getPostPaths";
 import config from "@/config";
 
-const { posts: postsConfig } = config;
-
 const locale = Astro.currentLocale ?? config.site.lang;
-const t = useTranslations(locale);
-
-const posts = await getCollection("posts");
-const sortedPosts = getSortedPosts(posts);
+const sortedPosts = getSortedPosts(await getCollection("posts"));
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+const recentPosts = sortedPosts.slice(0, config.posts.perIndex);
 const homePath = getRelativeLocaleUrl(locale, "");
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+    timeZone: config.site.timezone,
+  }).format(date);
 ---
 
 <Layout>
@@ -30,85 +29,109 @@ const homePath = getRelativeLocaleUrl(locale, "");
     id="main-content"
     data-layout="index"
     data-home-path={homePath}
-    class="app-layout"
+    class="app-layout academic-home"
   >
-    <section id="hero" class="border-border border-b pt-8 pb-6">
-      <h1
-        class="my-4 flex flex-wrap items-baseline gap-x-4 gap-y-2 text-3xl font-bold sm:my-6 sm:text-4xl"
-      >
-        罗澜 <span
-          class="text-muted-foreground text-base font-normal sm:text-lg"
-          >Lan Luo</span
-        >
-      </h1>
-      <p class="text-accent">华东师范大学 · 本科生</p>
-      <p class="mt-5 leading-8">
-        关注空间人工智能（GeoAI）、具身智能与多模态系统。
-        在这里记录论文阅读、实验过程、工程实践，以及学习中的思考。
+    <section aria-labelledby="profile-heading">
+      <h1 id="profile-heading">Lan Luo</h1>
+      <p class="profile-subtitle">
+        Undergraduate Student @ East China Normal University
       </p>
-      <p class="text-muted-foreground mt-3 text-sm leading-7" lang="en">
-        Exploring spatial AI, embodied intelligence, and multimodal systems.
-        Learning by building, testing, and writing.
-      </p>
-      <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
-        <LinkButton
-          href={getRelativeLocaleUrl(locale, "about")}
-          class="underline decoration-dashed underline-offset-4"
-          >更多关于我</LinkButton
-        >
-        <LinkButton href="https://github.com/rileyluolan">GitHub ↗</LinkButton>
-        <a
-          href="/rss.xml"
-          aria-label="订阅 RSS"
-          title="订阅 RSS"
-          class="hover:text-accent inline-flex p-2"
-          ><IconRss width={20} height={20} /></a
-        >
+      <div class="profile-grid">
+        <div class="profile-intro">
+          <p>
+            Hi, I am <strong>Lan Luo <span lang="zh-CN">(罗澜)</span></strong>.
+          </p>
+          <p>
+            I am an undergraduate student at East China Normal University. My
+            interests lie in spatial artificial intelligence (GeoAI), embodied
+            intelligence, and multimodal systems.
+          </p>
+          <p>
+            I am interested in how intelligent systems perceive and understand
+            the world, connect language with spatial information, and turn
+            understanding into action.
+          </p>
+          <p>
+            I write about paper reading, experiments, and engineering practice
+            on my <a href="/posts/">blog</a>. This is also a place to keep track
+            of questions, ideas, and what I learn while building things. <a
+              href="/about/">More about me</a
+            >.
+          </p>
+        </div>
+        <aside class="profile-sidebar" aria-label="Profile and links">
+          <img
+            src="/profile-avatar.jpg"
+            alt="Lan Luo's GitHub avatar"
+            width="460"
+            height="460"
+            class="profile-avatar"
+            fetchpriority="high"
+          />
+          <p class="profile-affiliation">East China Normal University</p>
+          <p class="profile-role">Undergraduate Student</p>
+          <Socials />
+          <a class="profile-github" href="https://github.com/rileyluolan"
+            >@rileyluolan</a
+          >
+        </aside>
       </div>
+    </section>
+
+    <section class="home-section" aria-labelledby="interests-heading">
+      <h2 id="interests-heading">Research Interests</h2>
+      <ul class="research-interests">
+        <li>Spatial artificial intelligence (GeoAI)</li>
+        <li>Embodied intelligence and multimodal systems</li>
+        <li>Vision-language navigation and UAV systems</li>
+        <li>Research engineering and evaluation workflows</li>
+      </ul>
     </section>
 
     {
       featuredPosts.length > 0 && (
-        <section
-          id="featured"
-          class:list={[
-            "pt-12 pb-6",
-            { "border-border border-b": recentPosts.length > 0 },
-          ]}
-        >
-          <h2 class="text-2xl font-semibold tracking-wide">
-            {t.home.featured}
-          </h2>
-          <ul>
-            {featuredPosts.map(data => (
-              <Card variant="h3" {...data} />
+        <section class="home-section" aria-labelledby="featured-heading">
+          <h2 id="featured-heading">Featured Writing</h2>
+          <ul class="dated-posts">
+            {featuredPosts.map(post => (
+              <li>
+                <time datetime={post.data.pubDatetime.toISOString()}>
+                  {formatDate(post.data.pubDatetime)}
+                </time>
+                <a href={getPostUrl(post.id, post.filePath, locale)}>
+                  {post.data.title}
+                </a>
+              </li>
             ))}
           </ul>
         </section>
       )
     }
 
-    {
-      recentPosts.length > 0 && (
-        <section id="recent-posts" class="pt-12 pb-6">
-          <h2 class="text-2xl font-semibold tracking-wide">
-            {t.home.recentPosts}
-          </h2>
-          <ul>
-            {recentPosts.slice(0, postsConfig.perIndex).map(data => (
-              <Card variant="h3" {...data} />
-            ))}
-          </ul>
-        </section>
-      )
-    }
-
-    <div class="my-8 text-center">
-      <LinkButton href={getRelativeLocaleUrl(locale, "posts")}>
-        {t.home.allPosts}
-        <IconArrowRight class="inline-block rtl:-rotate-180" />
-      </LinkButton>
-    </div>
+    <section class="home-section latest-posts" aria-labelledby="latest-heading">
+      <div class="section-heading">
+        <h2 id="latest-heading"><a href="/posts/">Latest Posts</a></h2>
+        <a class="all-posts" href="/posts/">All posts →</a>
+      </div>
+      <ul class="dated-posts">
+        {
+          recentPosts.map(post => (
+            <li>
+              <time datetime={post.data.pubDatetime.toISOString()}>
+                {formatDate(post.data.pubDatetime)}
+              </time>
+              <a href={getPostUrl(post.id, post.filePath, locale)}>
+                {post.data.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="writing-note">
+        Notes on research, experiments, and learning. Written in English and
+        Chinese. <a href="/rss.xml">RSS</a>
+      </p>
+    </section>
   </main>
   <Footer />
 </Layout>
@@ -117,9 +140,7 @@ const homePath = getRelativeLocaleUrl(locale, "");
   document.addEventListener("astro:page-load", () => {
     const indexLayout = (document.querySelector("#main-content") as HTMLElement)
       ?.dataset;
-    const baseRoot = import.meta.env.BASE_URL.replace(/\/?$/, "/");
-    if (indexLayout?.layout) {
-      sessionStorage.setItem("backUrl", indexLayout.homePath ?? baseRoot);
-    }
+    if (indexLayout?.layout)
+      sessionStorage.setItem("backUrl", indexLayout.homePath ?? "/");
   });
 </script>

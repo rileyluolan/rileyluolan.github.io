@@ -1,4 +1,4 @@
-/* Register design tokens for Tailwind v4 */
+/* Shared tokens keep all AstroPaper components on the same theme. */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -7,30 +7,27 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
-  --font-app:
-    ui-monospace, SFMono-Regular, Menlo, Consolas, "PingFang SC",
-    "Microsoft YaHei", monospace;
+  --font-app: Georgia, "Times New Roman", "Songti SC", STSong, SimSun, serif;
+  --font-heading:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial,
+    "PingFang SC", "Microsoft YaHei", sans-serif;
 }
-
-/* Light theme values */
 :root,
 [data-theme="light"] {
-  --background: #fdfdfd;
-  --foreground: #282728;
-  --accent: #006cac;
+  --background: #f8f9fc;
+  --foreground: #202530;
+  --accent: #355e8b;
   --accent-foreground: #ffffff;
-  --muted: #e6e6e6;
-  --muted-foreground: #6b7280;
-  --border: #ece9e9;
+  --muted: #e9edf3;
+  --muted-foreground: #5d6674;
+  --border: #dfe3e9;
 }
-
-/* Dark theme values */
 [data-theme="dark"] {
-  --background: #212737;
-  --foreground: #eaedf3;
-  --accent: #ff6b01;
-  --accent-foreground: #ffffff;
-  --muted: #343f60;
-  --muted-foreground: #afb9ca;
-  --border: #ab4b08;
+  --background: #1b1e25;
+  --foreground: #e5e8ef;
+  --accent: #9fc4ed;
+  --accent-foreground: #1b1e25;
+  --muted: #2c323e;
+  --muted-foreground: #aeb8c6;
+  --border: #383f4c;
 }

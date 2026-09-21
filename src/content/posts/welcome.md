@@ -15,3 +15,11 @@ draft: false
 有些内容会整理成完整的文章，有些会保留为阶段性的笔记，并随着理解变化继续更新。
 
 不急着把每一篇都写成结论。先把问题、尝试和过程记录下来。
+
+---
+
+This is a place for my reading notes, experiments, and engineering practice in spatial AI and embodied intelligence. I also keep track of the questions and ideas that emerge along the way.
+
+Some posts will be complete articles. Others will remain working notes, updated as my understanding develops.
+
+I do not need every post to end with a conclusion. For now, I want to document the questions, the attempts, and the process.

@@ -31,8 +31,8 @@ export default defineConfig({
     }),
   ],
   i18n: {
-    locales: ["zh-CN"],
-    defaultLocale: "zh-CN",
+    locales: ["en"],
+    defaultLocale: "en",
     routing: {
       prefixDefaultLocale: false,
     },
@@ -43,7 +43,7 @@ export default defineConfig({
         [remarkToc, { heading: "目录|table of contents" }],
         [
           remarkCollapse,
-          { test: "目录|Table of contents", summary: "展开目录" },
+          { test: "目录|Table of contents", summary: "Table of contents" },
         ],
       ],
       rehypePlugins: [rehypeCallouts],

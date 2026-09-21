@@ -33,7 +33,7 @@ const datetime = dayjs(isModified ? modDatetime : pubDatetime).tz(
   postTimezone ?? config.site.timezone
 );
 
-const date = datetime.format("YYYY-MM-DD");
+const date = datetime.format("MMM DD, YYYY");
 ---
 
 <div

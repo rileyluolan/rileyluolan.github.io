@@ -22,7 +22,7 @@
 }
 
 @utility max-w-app {
-  @apply max-w-3xl;
+  max-width: 60rem;
 }
 
 @utility app-layout {
@@ -30,7 +30,7 @@
 }
 
 @utility active-nav {
-  @apply underline decoration-wavy decoration-2 underline-offset-8;
+  @apply text-accent font-semibold;
 }
 
 :target {
@@ -62,5 +62,218 @@
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Academic profile typography; code retains its monospace font. */
+body {
+  font-size: 17px;
+  line-height: 1.75;
+}
+h1,
+h2,
+h3,
+h4,
+header,
+footer,
+nav,
+button,
+input,
+.profile-sidebar,
+.all-posts {
+  font-family: var(--font-heading);
+}
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: -0.025em;
+}
+code,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+header {
+  font-size: 16px;
+}
+footer {
+  color: var(--muted-foreground);
+  font-size: 13px;
+}
+.app-prose {
+  font-size: 18px;
+  line-height: 1.85;
+}
+.app-prose a {
+  color: var(--accent);
+  text-decoration-style: solid;
+}
+.academic-home {
+  padding-top: 3.25rem;
+  padding-bottom: 3rem;
+}
+.academic-home h1 {
+  font-size: 2.35rem;
+  line-height: 1.2;
+  font-weight: 700;
+}
+.profile-subtitle {
+  margin-top: 1rem;
+  margin-bottom: 2.25rem;
+  font-size: 18px;
+}
+.profile-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: 3rem;
+  align-items: start;
+}
+.profile-intro {
+  font-size: 18px;
+  line-height: 1.85;
+}
+.profile-intro p + p {
+  margin-top: 1.15rem;
+}
+.profile-intro a,
+.profile-github,
+.dated-posts a,
+.writing-note a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.profile-intro a:hover,
+.dated-posts a:hover {
+  text-decoration-thickness: 2px;
+}
+.profile-sidebar {
+  text-align: center;
+  padding-top: 0.25rem;
+}
+.profile-avatar {
+  display: block;
+  width: 220px;
+  height: 220px;
+  max-width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 auto 1.25rem;
+  box-shadow: 0 3px 12px rgb(0 0 0 / 10%);
+}
+.profile-affiliation {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+.profile-role {
+  color: var(--muted-foreground);
+  font-size: 14px;
+  margin-top: 0.25rem;
+}
+.profile-sidebar > div {
+  justify-content: center;
+  margin-top: 0.65rem;
+}
+.profile-github {
+  display: inline-block;
+  font-size: 14px;
+  margin-top: 0.25rem;
+}
+.home-section {
+  margin-top: 2.65rem;
+}
+.home-section h2 {
+  font-size: 1.65rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.research-interests {
+  list-style: disc;
+  padding-left: 1.35rem;
+  margin-top: 0.85rem;
+  font-size: 18px;
+  line-height: 1.85;
+}
+.research-interests li::marker {
+  color: var(--foreground);
+}
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.section-heading h2 a:hover {
+  color: var(--accent);
+}
+.all-posts {
+  color: var(--accent);
+  font-size: 14px;
+  white-space: nowrap;
+}
+.dated-posts {
+  margin-top: 0.8rem;
+}
+.dated-posts li {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.6rem 0;
+}
+.dated-posts time {
+  color: var(--muted-foreground);
+  font-size: 15px;
+  white-space: nowrap;
+}
+.dated-posts a {
+  overflow-wrap: anywhere;
+}
+.writing-note {
+  color: var(--muted-foreground);
+  font-size: 15px;
+  margin-top: 1.15rem;
+}
+@media (max-width: 767px) {
+  .academic-home {
+    padding-top: 2rem;
+  }
+  .academic-home h1 {
+    font-size: 2rem;
+  }
+  .profile-subtitle {
+    margin-bottom: 1.5rem;
+    font-size: 16px;
+  }
+  .profile-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+  }
+  .profile-sidebar {
+    grid-row: 1;
+  }
+  .profile-avatar {
+    width: 160px;
+    height: 160px;
+    margin-bottom: 1rem;
+  }
+  .profile-intro,
+  .research-interests,
+  .app-prose {
+    font-size: 17px;
+  }
+  .home-section {
+    margin-top: 2rem;
+  }
+  .home-section h2 {
+    font-size: 1.45rem;
+  }
+}
+@media (max-width: 420px) {
+  .dated-posts li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.15rem;
   }
 }
