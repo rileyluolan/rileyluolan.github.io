@@ -1,47 +1,125 @@
 ---
-import { getCollection, getEntry, render } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import NoteCard from '../components/NoteCard.astro';
-const now = await getEntry('pages', 'now');
-const NowContent = now ? (await render(now)).Content : null;
-const notes = (await getCollection('notes', ({ data }) => !data.draft && data.featured)).sort((a, b) => (a.data.featuredOrder ?? 999) - (b.data.featuredOrder ?? 999));
+import { getCollection } from "astro:content";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import IconRss from "@/assets/icons/IconRss.svg";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Card from "@/components/Card.astro";
+import LinkButton from "@/components/LinkButton.astro";
+import { getSortedPosts } from "@/utils/getSortedPosts";
+import { useTranslations } from "@/i18n";
+import config from "@/config";
+
+const { posts: postsConfig } = config;
+
+const locale = Astro.currentLocale ?? config.site.lang;
+const t = useTranslations(locale);
+
+const posts = await getCollection("posts");
+const sortedPosts = getSortedPosts(posts);
+const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
+const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+const homePath = getRelativeLocaleUrl(locale, "");
 ---
-<BaseLayout>
-  <section class="hero container">
-    <p class="eyebrow">Hello, I’m</p>
-    <h1>罗澜 <span>Lan Luo</span></h1>
-    <p class="subtitle">Spatial AI · Embodied Intelligence · Building Things</p>
-    <p class="intro">I build, test, and write about spatial intelligence,<br class="wide" /> multimodal systems, research workflows, and learning in public.</p>
-    <p class="chinese">记录空间智能、具身系统、工程实践，以及成为研究者与构建者的过程。</p>
-    <div class="actions"><a class="button" href="/notes/">Explore Notes</a><a class="button secondary" href="/about/">About Me</a></div>
-  </section>
 
-  <section class="quiet-section"><div class="container split">
-    <div><p class="eyebrow">Current focus</p><h2>Now</h2><p class="updated">Last updated: {now?.data.lastUpdated}</p></div>
-    <div class="now-content prose">{NowContent && <NowContent />}</div>
-  </div></section>
+<Layout>
+  <Header />
+  <main
+    id="main-content"
+    data-layout="index"
+    data-home-path={homePath}
+    class="app-layout"
+  >
+    <section id="hero" class="border-border border-b pt-8 pb-6">
+      <h1
+        class="my-4 flex flex-wrap items-baseline gap-x-4 gap-y-2 text-3xl font-bold sm:my-6 sm:text-4xl"
+      >
+        罗澜 <span
+          class="text-muted-foreground text-base font-normal sm:text-lg"
+          >Lan Luo</span
+        >
+      </h1>
+      <p class="text-accent">华东师范大学 · 本科生</p>
+      <p class="mt-5 leading-8">
+        关注空间人工智能（GeoAI）、具身智能与多模态系统。
+        在这里记录论文阅读、实验过程、工程实践，以及学习中的思考。
+      </p>
+      <p class="text-muted-foreground mt-3 text-sm leading-7" lang="en">
+        Exploring spatial AI, embodied intelligence, and multimodal systems.
+        Learning by building, testing, and writing.
+      </p>
+      <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <LinkButton
+          href={getRelativeLocaleUrl(locale, "about")}
+          class="underline decoration-dashed underline-offset-4"
+          >更多关于我</LinkButton
+        >
+        <LinkButton href="https://github.com/rileyluolan">GitHub ↗</LinkButton>
+        <a
+          href="/rss.xml"
+          aria-label="订阅 RSS"
+          title="订阅 RSS"
+          class="hover:text-accent inline-flex p-2"
+          ><IconRss width={20} height={20} /></a
+        >
+      </div>
+    </section>
 
-  <section class="quiet-section"><div class="container">
-    <div class="section-head"><div><p class="eyebrow">From the garden</p><h2>Selected Notes</h2></div>{notes.length > 0 && <a href="/notes/">Browse all notes →</a>}</div>
-    {notes.length > 0 ? <div>{notes.map(note => <NoteCard note={note} />)}</div> : <div class="empty-state"><p>A few notes are still taking shape.\nThis space will gradually collect selected writing on research, systems, learning, and building.</p><a class="button secondary" href="/notes/">Browse Notes</a></div>}
-  </div></section>
+    {
+      featuredPosts.length > 0 && (
+        <section
+          id="featured"
+          class:list={[
+            "pt-12 pb-6",
+            { "border-border border-b": recentPosts.length > 0 },
+          ]}
+        >
+          <h2 class="text-2xl font-semibold tracking-wide">
+            {t.home.featured}
+          </h2>
+          <ul>
+            {featuredPosts.map(data => (
+              <Card variant="h3" {...data} />
+            ))}
+          </ul>
+        </section>
+      )
+    }
 
-  <section class="quiet-section"><div class="container projects-line"><div><p class="eyebrow">Work in progress</p><h2>Projects</h2></div><div><p>This section is still growing. I am currently focusing on learning, experimenting, and turning early ideas into work I can share.</p><a class="button secondary" href="/projects/">Visit Projects</a></div></div></section>
-</BaseLayout>
-<style>
-  .hero { padding: clamp(5rem, 14vw, 10rem) 0 clamp(5rem, 11vw, 8rem); }
-  .hero h1 { max-width: 800px; margin: .15rem 0 .8rem; font-size: clamp(2.8rem, 6vw, 4.4rem); }
-  .hero h1 span { margin-left: .35em; color: var(--muted); font-family: var(--sans); font-size: .3em; font-weight: 500; letter-spacing: .02em; white-space: nowrap; }
-  .subtitle { margin: 0 0 2.2rem; color: var(--accent); font-size: clamp(1rem, 2.5vw, 1.25rem); letter-spacing: .02em; }
-  .intro { max-width: 700px; margin: 0; font-family: var(--serif); font-size: clamp(1.35rem, 3vw, 1.8rem); line-height: 1.5; }
-  .chinese { max-width: 680px; margin: 1rem 0 0; color: var(--muted); }
-  .actions { display: flex; gap: .7rem; margin-top: 2rem; }
-  .split, .projects-line { display: grid; grid-template-columns: minmax(200px, .8fr) minmax(0, 1.5fr); gap: clamp(2rem, 8vw, 7rem); }
-  .split h2, .projects-line h2 { margin: 0; }
-  .updated { color: var(--faint); font-size: .8rem; }
-  .now-content { color: var(--muted); }
-  .now-content :global(p:first-child) { margin-top: 0; }
-  .now-content :global(p:last-child) { display: none; }
-  .projects-line p { max-width: 620px; margin-top: 0; color: var(--muted); }
-  @media (max-width: 700px) { .split, .projects-line { grid-template-columns: 1fr; gap: 1rem; } .wide { display: none; } }
-</style>
+    {
+      recentPosts.length > 0 && (
+        <section id="recent-posts" class="pt-12 pb-6">
+          <h2 class="text-2xl font-semibold tracking-wide">
+            {t.home.recentPosts}
+          </h2>
+          <ul>
+            {recentPosts.slice(0, postsConfig.perIndex).map(data => (
+              <Card variant="h3" {...data} />
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <div class="my-8 text-center">
+      <LinkButton href={getRelativeLocaleUrl(locale, "posts")}>
+        {t.home.allPosts}
+        <IconArrowRight class="inline-block rtl:-rotate-180" />
+      </LinkButton>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
+      ?.dataset;
+    const baseRoot = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+    if (indexLayout?.layout) {
+      sessionStorage.setItem("backUrl", indexLayout.homePath ?? baseRoot);
+    }
+  });
+</script>

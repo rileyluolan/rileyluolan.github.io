@@ -1,75 +1,78 @@
-# 罗澜 · Lan Luo — Personal Site
+# 罗澜 · Lan Luo
 
-A quiet personal homepage and public notebook for spatial AI, embodied intelligence, multimodal systems, research engineering, and learning in public. Built with Astro, TypeScript, Markdown/MDX, and Content Collections.
+个人主页与博客：<https://rileyluolan.github.io/>
 
-## Local development
+基于 [AstroPaper v6.1.0](https://github.com/satnaing/astro-paper/releases/tag/v6.1.0)，保留原主题的响应式布局、搜索、标签、分页、明暗模式和文章阅读组件。网站由 GitHub Pages 免费托管，推送到 `main` 后自动发布。
 
-Requires Node.js 22 or newer (Node 22 is used in CI) and npm.
+## 日常写文章
 
-```bash
-npm install
-npm run dev
+1. 复制 `templates/post.md` 到 `src/content/posts/`，例如 `paper-reading.md`。
+2. 修改标题、摘要、日期、标签，使用 Markdown 写正文。
+3. 完成后将 `draft: true` 改为 `draft: false`。
+4. 提交并推送。GitHub 仓库的 **Actions → Deploy to GitHub Pages** 变绿后，文章就会上线。
+
+也可以直接在 GitHub 网页上打开 `src/content/posts/`，选择 **Add file → Create new file**，粘贴模板并编辑，不必在电脑上安装开发环境。
+
+```yaml
+---
+title: 我的文章标题
+description: 一两句话介绍内容。
+pubDatetime: 2026-09-21T12:00:00+08:00
+tags:
+  - 论文阅读
+draft: false
+featured: false
+---
 ```
 
-Open the local URL shown in the terminal, usually `http://localhost:4321`.
+- `featured: true`：在首页精选区域展示。
+- `modDatetime`：可选，填写最近一次实质更新的时间。
+- `draft: true`：不会生成文章页面、列表、RSS 或搜索结果；但源文件仍在公开 GitHub 仓库中，私人材料请留在本地。
+- 日期设在未来：下次构建时才判断是否发布，不会自动按时间触发部署。
+- 图片放在 `public/images/`，正文使用 `![图片说明](/images/example.webp)`。文件名尽量使用英文、数字和连字符。
+- 长文章可加入 `## 目录`，构建时生成可折叠目录。
+- 文章支持代码高亮、复制、图片放大和可横向滚动的表格。
 
-Run a production build and preview it locally:
+## 修改个人资料
+
+| 内容                             | 文件                         |
+| -------------------------------- | ---------------------------- |
+| 首页简短介绍                     | `src/pages/index.astro`      |
+| About 完整介绍                   | `src/content/pages/about.md` |
+| 网站名称、描述、GitHub、分页数量 | `astro-paper.config.ts`      |
+| 中文界面文案                     | `src/i18n/lang/zh-CN.ts`     |
+| 主题颜色                         | `src/styles/theme.css`       |
+
+目前仅展示首页、Blog、About。标签从 Blog 页和文章页进入。以后有正式发表时再增加 Publications。
+
+## 本地预览
+
+使用 Node.js 22.12 或更新版本，以及 pnpm 11.19.0。
 
 ```bash
-npm run build
-npm run preview
+pnpm install --frozen-lockfile
+pnpm dev
 ```
 
-`npm run build` includes `astro check`, so type and content-schema errors fail the build.
+正式构建及预览（搜索依赖构建生成的索引）：
 
-## Deploy to GitHub Pages
+```bash
+pnpm build
+pnpm preview
+```
 
-1. Create a public repository named exactly `rileyluolan.github.io` under the `rileyluolan` account.
-2. Push this project to its `main` branch.
-3. On GitHub, open **Settings → Pages**.
-4. Under **Build and deployment → Source**, choose **GitHub Actions**.
-5. The workflow at `.github/workflows/deploy.yml` builds and deploys every push to `main`.
-6. After the first successful workflow, visit `https://rileyluolan.github.io/`.
+## 发布与恢复
 
-The site URL is already configured in `astro.config.mjs`. Because this is the account-level repository, no `base` path is needed.
+- 部署配置在 `.github/workflows/deploy.yml`。
+- GitHub 仓库 **Settings → Pages → Source** 应为 **GitHub Actions**。
+- 地址保持 `https://rileyluolan.github.io/`，不需要自购域名。
+- 旧 `/notes/`、`/notes/welcome/` 链接会跳转到新博客；旧 `/now/`、`/projects/` 转到 About。
+- 已有 Git 历史保留。需要恢复时可以 revert 对应提交并重新部署，无需删除仓库。
 
-## Add a Note
+## 维护原则
 
-1. Copy `templates/note-template.md` into `src/content/notes/` and give it a URL-friendly filename.
-2. Fill in the frontmatter. Valid categories are `Research Notes`, `Paper Reading`, `Engineering Logs`, `Career & Learning`, and `Personal Systems`; valid statuses are `note`, `working`, and `selected`.
-3. Write the body in Markdown or rename the file to `.mdx` when components are needed.
-4. Run `npm run dev` and preview the page.
-5. Set `draft: false` when it is ready, then commit and push. GitHub Actions deploys it automatically.
+平时只更新内容。依赖按提交的锁文件安装，不需要每次发文都升级；只在修复必要问题或确实需要新功能时升级，先本地构建与预览。
 
-Set `featured: true` (and optionally `featuredOrder`) to show a note on the homepage. Draft notes are excluded from routes, lists, search, RSS, and production output.
+为降低维护量，使用系统字体和静态分享图，不依赖远程字体服务、服务器、数据库、评论后端或追踪服务。AstroPaper 后续更新不会自动覆盖本网站；必要时可以参考上游发行说明选择性同步。
 
-## Add a Project
-
-Copy `templates/project-template.md` into `src/content/projects/`, complete its frontmatter and body, and change `draft` to `false` when ready. The schema in `src/content/config.ts` already supports summaries, status, dates, links, cover images, highlights, and lessons learned. The public Projects page intentionally remains an empty state until real project entries are ready to be presented.
-
-## Edit personal content
-
-- Homepage introduction: `src/pages/index.astro`
-- Now content and update label: `src/content/pages/now.md`
-- About page and email placeholder: `src/pages/about.astro`
-- Navigation links: `src/components/Header.astro`
-- Site title, description, GitHub URL: `src/config/site.ts`
-- Colors, typography, and global spacing: `src/styles/global.css`
-
-## Content and publishing notes
-
-- Markdown and MDX are supported.
-- Math uses KaTeX syntax; fenced `mermaid` blocks render diagrams.
-- Heading anchors and an automatic table of contents are generated for article sections.
-- Code blocks receive a client-side copy button.
-- The RSS feed is `/rss.xml`; the sitemap is generated during build.
-- There is no database, CMS, analytics, tracking, login, or comment system.
-
-## Useful commands
-
-| Command | Purpose |
-| --- | --- |
-| `npm run dev` | Start the development server |
-| `npm run check` | Run Astro and TypeScript checks |
-| `npm run build` | Check and create the production site in `dist/` |
-| `npm run preview` | Preview the production build locally |
+相对上游的主要改动：个人内容、中文界面、精简导航与页脚、旧链接跳转、GitHub Pages 部署、本地字体策略及长表格适配。主题 MIT 许可证保留在 `LICENSE`。

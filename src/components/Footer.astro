@@ -1,10 +1,38 @@
 ---
-import { SITE } from '../config/site';
+import type { HTMLAttributes } from "astro/types";
+import Socials from "./Socials.astro";
+import config from "@/config";
+
+type Props = {
+  noMarginTop?: boolean;
+} & HTMLAttributes<"footer">;
+
+const { noMarginTop = false, class: className, ...attrs } = Astro.props;
+
+const currentYear = new Date().getFullYear();
 ---
-<footer><div class="container footer-inner"><p>© {new Date().getFullYear()} 罗澜 · Built with <a href="https://astro.build/" target="_blank" rel="noreferrer">Astro</a> · Hosted on <a href="https://pages.github.com/" target="_blank" rel="noreferrer">GitHub Pages</a>.</p><a href={SITE.github}>GitHub ↗</a></div></footer>
-<style>
-  footer { margin-top: 5rem; padding: 2.2rem 0; border-top: 1px solid var(--border); color: var(--muted); font-size: .86rem; }
-  .footer-inner { display: flex; justify-content: space-between; gap: 1rem; }
-  footer p { margin: 0; }
-  @media (max-width: 600px) { .footer-inner { flex-direction: column; } }
-</style>
+
+<footer
+  class:list={["app-layout", { "mt-auto": !noMarginTop }, className]}
+  {...attrs}
+>
+  <div
+    class="border-border flex flex-col items-center justify-between border-t py-6 sm:flex-row-reverse sm:py-4"
+  >
+    <Socials />
+    <div
+      class="my-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm sm:justify-start"
+    >
+      <span>© {currentYear} {config.site.author}</span>
+      <span aria-hidden="true">·</span>
+      <a
+        href="https://github.com/satnaing/astro-paper"
+        class="hover:text-accent">AstroPaper</a
+      >
+      <span aria-hidden="true">·</span>
+      <a href="https://pages.github.com/" class="hover:text-accent"
+        >GitHub Pages</a
+      >
+    </div>
+  </div>
+</footer>
