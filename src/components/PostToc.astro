@@ -1,0 +1,206 @@
+---
+import type { MarkdownHeading } from "astro";
+
+type Props = { headings: MarkdownHeading[] };
+const { headings } = Astro.props;
+const groups: { heading: MarkdownHeading; children: MarkdownHeading[] }[] = [];
+for (const heading of headings) {
+  if (heading.depth === 2 || groups.length === 0) {
+    groups.push({ heading, children: [] });
+  } else {
+    groups[groups.length - 1].children.push(heading);
+  }
+}
+---
+
+<aside id="post-toc" class="post-toc" data-pagefind-ignore>
+  <details open>
+    <summary>Contents</summary>
+    <nav aria-label="On this page">
+      <p class="toc-label" aria-hidden="true">On this page</p>
+      <ol>
+        {
+          groups.map(({ heading, children }) => (
+            <li>
+              <a
+                href={`#${encodeURIComponent(heading.slug)}`}
+                data-toc-target={heading.slug}
+              >
+                {heading.text}
+              </a>
+              {children.length > 0 && (
+                <ol>
+                  {children.map(child => (
+                    <li>
+                      <a
+                        href={`#${encodeURIComponent(child.slug)}`}
+                        data-toc-target={child.slug}
+                      >
+                        {child.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+  </details>
+</aside>
+
+<script>
+  let dispose = () => {};
+
+  function initPostToc() {
+    dispose();
+    const root = document.querySelector<HTMLElement>("#post-toc");
+    const details = root?.querySelector("details");
+    if (!root || !details) return;
+
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const entries = Array.from(
+      root.querySelectorAll<HTMLAnchorElement>("a[data-toc-target]")
+    )
+      .map(link => ({
+        link,
+        heading: document.getElementById(link.dataset.tocTarget ?? ""),
+      }))
+      .filter(
+        (entry): entry is { link: HTMLAnchorElement; heading: HTMLElement } =>
+          !!entry.heading
+      );
+    let frame = 0;
+    let current: HTMLAnchorElement | undefined;
+
+    const update = () => {
+      frame = 0;
+      let active = entries[0];
+      for (const entry of entries) {
+        if (entry.heading.getBoundingClientRect().top <= 120) active = entry;
+        else break;
+      }
+      if (
+        window.scrollY + window.innerHeight >=
+        document.documentElement.scrollHeight - 2
+      ) {
+        active = entries[entries.length - 1];
+      }
+      if (active?.link !== current) {
+        current?.removeAttribute("aria-current");
+        current = active?.link;
+        current?.setAttribute("aria-current", "location");
+      }
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    const setLayout = () => {
+      details.open = desktop.matches;
+      schedule();
+    };
+    const onClick = (event: MouseEvent) => {
+      if (
+        !desktop.matches &&
+        (event.target as Element).closest("a[data-toc-target]")
+      ) {
+        details.open = false;
+      }
+    };
+
+    setLayout();
+    update();
+    root.addEventListener("click", onClick);
+    desktop.addEventListener("change", setLayout);
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    window.addEventListener("hashchange", schedule);
+    dispose = () => {
+      cancelAnimationFrame(frame);
+      root.removeEventListener("click", onClick);
+      desktop.removeEventListener("change", setLayout);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      window.removeEventListener("hashchange", schedule);
+    };
+  }
+
+  document.addEventListener("astro:page-load", initPostToc);
+  document.addEventListener("astro:before-swap", () => dispose());
+  initPostToc();
+</script>
+
+<style>
+  .post-toc {
+    min-width: 0;
+    margin-bottom: 1.5rem;
+  }
+  details {
+    border: 1px solid var(--border);
+    border-radius: 0.35rem;
+  }
+  summary {
+    padding: 0.65rem 1rem;
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  nav {
+    padding: 0.5rem 1rem 1rem;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .toc-label {
+    display: none;
+  }
+  ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  ol ol {
+    padding-inline-start: 0.9rem;
+  }
+  a {
+    display: block;
+    padding: 0.35rem 0.7rem;
+    border-inline-start: 2px solid var(--border);
+    color: var(--muted-foreground);
+    overflow-wrap: anywhere;
+  }
+  a:hover,
+  a[aria-current="location"] {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  a[aria-current="location"] {
+    font-weight: 600;
+  }
+  @media (min-width: 1024px) {
+    .post-toc {
+      position: sticky;
+      top: 1.5rem;
+      max-height: calc(100svh - 3rem);
+      overflow-y: auto;
+      align-self: start;
+      margin-bottom: 0;
+    }
+    details {
+      border: 0;
+    }
+    summary {
+      display: none;
+    }
+    nav {
+      padding: 0;
+    }
+    .toc-label {
+      display: block;
+      margin: 0 0 0.65rem 0.8rem;
+      color: var(--foreground);
+      font-weight: 600;
+    }
+  }
+</style>

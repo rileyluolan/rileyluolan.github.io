@@ -277,3 +277,26 @@ footer {
     gap: 0.15rem;
   }
 }
+
+/* The article owns its responsive layout; the table of contents stays beside it. */
+.post-shell {
+  width: 100%;
+  max-width: 60rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+.post-content {
+  min-width: 0;
+  width: 100%;
+}
+#article :is(h2, h3, h4, h5, h6) {
+  scroll-margin-top: 6rem;
+}
+@media (min-width: 1024px) {
+  .post-shell.has-toc {
+    display: grid;
+    grid-template-columns: 13rem minmax(0, 1fr);
+    gap: 2.5rem;
+    max-width: 72rem;
+  }
+}
