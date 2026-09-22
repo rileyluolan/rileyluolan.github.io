@@ -43,9 +43,9 @@ featured: false
 | 英文界面文案                     | `src/i18n/lang/en.ts`        |
 | 主题颜色                         | `src/styles/theme.css`       |
 
-目前仅展示 Home、Blog、About，界面和个人介绍以英文为主，文章可以使用中文或英文。首页采用英文介绍、右侧 GitHub 头像、Research Interests 和按日期排列的 Latest Posts。标签从 Blog 页和文章页进入。以后有正式发表时再增加 Publications。
+目前仅展示 Home、Blog、About，界面和个人介绍以英文为主，文章可以使用中文或英文。首页采用英文介绍、右侧个人头像、Research Interests 和按日期排列的 Latest Posts。标签从 Blog 页和文章页进入。以后有正式发表时再增加 Publications。
 
-头像使用公开 GitHub 头像的本地副本，位于 `public/profile-avatar.jpg`，可以直接替换为自己的照片。
+头像使用个人海边照片的头肩构图，位于 `public/profile-avatar.webp`（768 × 768），页面自动显示为圆形。以后可以用相同文件名替换为新的方形照片；如果更改尺寸或文件名，同步更新 `src/pages/index.astro` 中的图片属性。
 
 ## 本地预览
 
